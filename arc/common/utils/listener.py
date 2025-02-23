@@ -1,6 +1,7 @@
 import socketserver
 from arc import logger
 import yaml
+import threading
 
 
 class RegistrationServer():
@@ -19,16 +20,19 @@ class RegistrationServer():
             self.port: int = cfg['listener']['port']
             
     def start_server(self):
-        with socketserver.TCPServer((self.ip, self.port), RegistrationHandler) as server:
-            server.serve_forever()
+        # separate thread required so shutdown doesnt deadlock
+        server = socketserver.ThreadingTCPServer((self.ip, self.port), RegistrationHandler)
+        server_thread = threading.Thread(target=server.serve_forever())
+        server_thread.daemon = True
+        server_thread.start()        
         
-            
-
-class RegistrationHandler(socketserver.BaseRequestHandler):
+        
+class RegistrationHandler(socketserver.StreamRequestHandler):
     
     def handle(self):
         logger.info("Handling request")
-        self.response = self.request.recv()
-        print(self.request.recv())
+        # self.response = self.rfile.readline()
+        print(self.rfile.readline().decode("utf-8"))
+        self.wfile.write(bytes("bruh", "utf-8"))
         self.server.shutdown()
         

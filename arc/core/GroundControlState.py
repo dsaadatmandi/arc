@@ -6,10 +6,12 @@ class GroundControlState():
     def __init__(self):
         logger.info("Starting GCS...")
         self.start_listener()
+        logger.debug("We out here")
         pass
     
     def start_listener(self):
         RegistrationServer()
+        return
 
     def gather_facts(self):
         pass
