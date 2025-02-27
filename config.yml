@@ -1,3 +1,6 @@
 listener:
   ip: localhost
   port: 1234
+mavproxy:
+  ip:
+  port: 14550 

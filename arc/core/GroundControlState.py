@@ -1,5 +1,6 @@
-from common.utils.listener import RegistrationServer
+from arc.common.utils.RegistrationServer import RegistrationServer
 from arc import logger
+
 
 class GroundControlState():
 
@@ -10,8 +11,10 @@ class GroundControlState():
         pass
     
     def start_listener(self):
-        RegistrationServer()
-        return
+        server = RegistrationServer()
+        data = server.start_server()
+        print(data)
+        pass
 
     def gather_facts(self):
         pass
@@ -22,3 +25,5 @@ class GroundControlState():
     def start(self):
         pass
     
+    def start_telemetry_listener(self):
+        pass
